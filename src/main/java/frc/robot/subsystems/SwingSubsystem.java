@@ -7,69 +7,79 @@ import java.util.function.BooleanSupplier;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.*;
 public class SwingSubsystem extends SubsystemBase {
     private final TalonSRX leftFMotor;
     private final TalonSRX rightFMotor;
-    //private final TalonSRX leftBMotor;
-    //private final TalonSRX rightBMotor;
+    private final Encoder externalEncoder = new Encoder(1,2);
+    private final VictorSPX leftBMotor;
+    private final VictorSPX rightBMotor;
     // Define your position setpoints
-    private static final double[] positionSetpoints = {0.0, 20000.0, 30000.0};
+    private static final double angle1 = 30;
+    private static final double angle2 = 50;
+    private static final double[] positionSetpoints = {0.0, (4096/360) * angle1, (4096/360) * angle2};
     private double targetAngle = 0.0;
     private double targetPosition = 0;
     //Maximum output value
     private static final double maxOutput = 1.0; 
     public SwingSubsystem(int talonLeftFId, int talonLeftBId, int talonRightFId, int talonRightBId) {
         leftFMotor = new TalonSRX(talonLeftFId);
-        //leftBMotor = new TalonSRX(talonLeftBId);
+        leftBMotor = new VictorSPX(talonLeftBId);
         rightFMotor = new TalonSRX(talonRightFId);
-        //rightBMotor = new TalonSRX(talonRightBId);
+        rightBMotor = new VictorSPX(talonRightBId);
         //Bruno: First we set everything to Factory Default settings.
     leftFMotor.configFactoryDefault();
-    //leftBMotor.configFactoryDefault();
+    leftBMotor.configFactoryDefault();
     rightFMotor.configFactoryDefault();
-    //rightBMotor.configFactoryDefault();  
+    rightBMotor.configFactoryDefault();  
+
+    leftFMotor.configPeakCurrentLimit(30);
+    rightFMotor.configPeakCurrentLimit(30);
+
     leftFMotor.setNeutralMode(NeutralMode.Brake);
-    //leftBMotor.setNeutralMode(NeutralMode.Brake);
+    leftBMotor.setNeutralMode(NeutralMode.Brake);
     rightFMotor.setNeutralMode(NeutralMode.Brake);
-    //rightBMotor.setNeutralMode(NeutralMode.Brake);
-    //leftBMotor.configVoltageCompSaturation(12,RobotMap.sensorsTimeoutMS);
+    rightBMotor.setNeutralMode(NeutralMode.Brake);
+
+    leftFMotor.configVoltageCompSaturation(12,RobotMap.sensorsTimeoutMS);
+    leftBMotor.configVoltageCompSaturation(12,RobotMap.sensorsTimeoutMS);
     rightFMotor.configVoltageCompSaturation(12, RobotMap.sensorsTimeoutMS);
-    //rightBMotor.configVoltageCompSaturation(12, RobotMap.sensorsTimeoutMS);
+    rightBMotor.configVoltageCompSaturation(12, RobotMap.sensorsTimeoutMS);
     //Bruno:Then we set the followers.
-    /*leftBMotor.follow(leftFMotor);
+    leftBMotor.follow(leftFMotor);
     rightBMotor.follow(rightFMotor);
-    */
     //Bruno: Then we configure the quadrature encoders
     leftFMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
     rightFMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
     resetEncoders();
     //Bruno: Then we configure the maximum voltage
     leftFMotor.configVoltageCompSaturation(12);
-    //leftBMotor.configVoltageCompSaturation(12);
+    leftBMotor.configVoltageCompSaturation(12);
     rightFMotor.configVoltageCompSaturation(12);
-    //rightBMotor.configVoltageCompSaturation(12);
+    rightBMotor.configVoltageCompSaturation(12);
     //Bruno: Once configured we enable it.
     leftFMotor.enableVoltageCompensation(false);
-    //leftBMotor.enableVoltageCompensation(false);
+    leftBMotor.enableVoltageCompensation(false);
     rightFMotor.enableVoltageCompensation(false);
-    //rightBMotor.enableVoltageCompensation(false);
+    rightBMotor.enableVoltageCompensation(false);
     //Bruno: Next we configure the time of the ramp. The time it takes to reach its full speed.
     leftFMotor.configOpenloopRamp(RobotMap.rampingTime);
     //leftBMotor.configOpenloopRamp(RobotMap.rampingTime);
     rightFMotor.configOpenloopRamp(RobotMap.rampingTime);
-    //rightBMotor.configOpenloopRamp(RobotMap.rampingTime);
+    rightBMotor.configOpenloopRamp(RobotMap.rampingTime);
     //Bruno: Next we set the sensor phase to true. Remember to do this before inverting the motors.
     leftFMotor.setSensorPhase(true);
-    //leftBMotor.setSensorPhase(true);
+    leftBMotor.setSensorPhase(true);
     rightFMotor.setSensorPhase(true);
-    //rightBMotor.setSensorPhase(true);
+    rightBMotor.setSensorPhase(true);
     //Bruno:Then we invert the motors of the right side.
-    rightFMotor.setInverted(true);
-    //rightBMotor.setInverted(true);
+    rightBMotor.setInverted(true);
+    leftBMotor.setInverted(true);
     //Bruno: Then we set the PID values:
     /* Configure the left Talon's selected sensor as local QuadEncoder */
 		leftFMotor.configSelectedFeedbackSensor(	FeedbackDevice.QuadEncoder,				// Local Feedback Source
@@ -117,7 +127,6 @@ public class SwingSubsystem extends SubsystemBase {
 		rightFMotor.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, 20, RobotMap.sensorsTimeoutMS);
 		rightFMotor.setStatusFramePeriod(StatusFrame.Status_14_Turn_PIDF1, 20, RobotMap.sensorsTimeoutMS);
 		leftFMotor.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, RobotMap.sensorsTimeoutMS);
-
 		/* Configure neutral deadband */
 		rightFMotor.configNeutralDeadband(RobotMap.minSpeed, RobotMap.sensorsTimeoutMS);
 		leftFMotor.configNeutralDeadband(RobotMap.minSpeed, RobotMap.sensorsTimeoutMS);
@@ -125,10 +134,10 @@ public class SwingSubsystem extends SubsystemBase {
 		/* Max out the peak output (for all modes).  
 		 * However you can limit the output of a given PID object with configClosedLoopPeakOutput().
 		 */
-		leftFMotor.configPeakOutputForward(+1.0, RobotMap.sensorsTimeoutMS);
-		leftFMotor.configPeakOutputReverse(-1.0, RobotMap.sensorsTimeoutMS);
-		rightFMotor.configPeakOutputForward(+1.0, RobotMap.sensorsTimeoutMS);
-		rightFMotor.configPeakOutputReverse(-1.0, RobotMap.sensorsTimeoutMS);
+		leftFMotor.configPeakOutputForward(+0.2, RobotMap.sensorsTimeoutMS);
+		leftFMotor.configPeakOutputReverse(-0.2, RobotMap.sensorsTimeoutMS);
+		rightFMotor.configPeakOutputForward(+0.2, RobotMap.sensorsTimeoutMS);
+		rightFMotor.configPeakOutputReverse(-0.2, RobotMap.sensorsTimeoutMS);
 
 		/* FPID Gains for distance servo */
 		rightFMotor.config_kP(RobotMap.PIDDistnaceID, RobotMap.PIDDistance.kP, RobotMap.sensorsTimeoutMS);
@@ -210,9 +219,9 @@ public class SwingSubsystem extends SubsystemBase {
         //rightFMotor.set(ControlMode.Position,targetPosition,DemandType.AuxPID, targetAngle);
         //leftFMotor.follow(rightFMotor,FollowerType.AuxOutput1);
         rightFMotor.set(ControlMode.Position,targetPosition);
-        leftFMotor.follow(rightFMotor);
-        //rightBMotor.follow(rightFMotor, FollowerType.PercentOutput);
-        //leftBMotor.follow(leftFMotor, FollowerType.PercentOutput);
+        //leftFMotor.follow(rightFMotor);
+        rightBMotor.follow(rightFMotor);
+        //leftBMotor.follow(leftFMotor);
         SmartDashboard.putNumber("Right Position", rightFMotor.getSelectedSensorPosition());
         SmartDashboard.putNumber("Left Position", leftFMotor.getSelectedSensorPosition());
     }

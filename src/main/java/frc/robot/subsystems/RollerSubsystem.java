@@ -14,7 +14,9 @@ public class RollerSubsystem extends SubsystemBase {
     public RollerSubsystem(int motorId) {
         rollerMotor = new CANSparkMax(motorId, CANSparkMax.MotorType.kBrushless); // Replace with actual device ID
         //boomstickEncoder = boomstickMotor.getAlternateEncoder(Type.kQuadrature, 4096);
+        rollerMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
         rollerEncoder = rollerMotor.getEncoder();
+        rollerMotor.setSmartCurrentLimit(30);
         // Configure the integrated PID controller
       
         // Set the output range of the PID controller

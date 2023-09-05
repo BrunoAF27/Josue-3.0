@@ -33,10 +33,10 @@ public class RobotContainer {
   However the Commands are the ones that will define which actions the subsystems will do.
   */
   //private final BoomStickSubsystem boomStickSubsystem = new BoomStickSubsystem(7);
-  private final SwingSubsystem swingSubsystem = new SwingSubsystem(2,4,3,5);
-  private final BoomStickSubsystem boomStickSubsystem = new BoomStickSubsystem(6);
-  private final WristSubsystem wristSubsystem = new WristSubsystem(8);
-  private final RollerSubsystem rollerSubsystem = new RollerSubsystem(7);
+  private final SwingSubsystem swingSubsystem = new SwingSubsystem(23,21,24,22);
+  //private final BoomStickSubsystem boomStickSubsystem = new BoomStickSubsystem(6);
+  //private final WristSubsystem wristSubsystem = new WristSubsystem(8);
+  private final RollerSubsystem rollerSubsystem = new RollerSubsystem(20);
   //⬇Bruno: Now that we have every robot component, we are going to declare the controllers.
   public  Joystick controllerPlayer1 = new Joystick(0);
   public  Joystick controllerPlayer2 = new Joystick(1);
@@ -59,15 +59,16 @@ public class RobotContainer {
    
   public RobotContainer() {
     //swingSubsystem.setDefaultCommand(swingCommand);
-    swingSubsystem.setDefaultCommand(
+   /* swingSubsystem.setDefaultCommand(
       new SwingCommand(swingSubsystem)
-    );
-    boomStickSubsystem.setDefaultCommand(
+    );*/
+    /*boomStickSubsystem.setDefaultCommand(
       new BoomStickCommand(boomStickSubsystem)
     );
     wristSubsystem.setDefaultCommand(
       new WristCommand(wristSubsystem)
     );
+    */
     rollerSubsystem.setDefaultCommand(
       new RollerCommand(
         rollerSubsystem,
@@ -84,7 +85,7 @@ public class RobotContainer {
             () -> robotCentric.getAsBoolean()
         )
     );
-    configureButtonBindings();
+    //configureButtonBindings();
   }
 
   private void configureButtonBindings() {
@@ -100,22 +101,30 @@ public class RobotContainer {
     player2YButton.onTrue(new InstantCommand(() -> boomStickSubsystem.setTargetPosition(2)));
     */
     player2AButton.onTrue(
-      new SequentialCommandGroup(
+      new InstantCommand(()-> swingSubsystem.setPosition(0))
+    );
+     /* new SequentialCommandGroup(
         new InstantCommand(()-> swingSubsystem.setPosition(0)),
-        new InstantCommand(()-> boomStickSubsystem.setTargetPosition(0)) 
+        //new InstantCommand(()-> boomStickSubsystem.setTargetPosition(0)) 
       )
-    );
+    );*/
     player2BButton.onTrue(
-      new SequentialCommandGroup(
-        new InstantCommand(()-> swingSubsystem.setPosition(1)),
-        new InstantCommand(()-> boomStickSubsystem.setTargetPosition(1)) 
+    new InstantCommand(()-> swingSubsystem.setPosition(1))
+    );
+    /*new SequentialCommandGroup(
+        ,
+        //new InstantCommand(()-> boomStickSubsystem.setTargetPosition(1)) 
       )
     );
+    */
+
     player2YButton.onTrue(
-      new SequentialCommandGroup(
+      new InstantCommand(()-> swingSubsystem.setPosition(2))
+      /*new SequentialCommandGroup(
         new InstantCommand(()-> swingSubsystem.setPosition(2)),
         new InstantCommand(()-> boomStickSubsystem.setTargetPosition(2)) 
       )
+      */
     );
     zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
     //player2BButton.onTrue(new InstantCommand(() -> swingSubsystem.setPosition(1)));
