@@ -12,6 +12,7 @@ the Timed Robot is just one code running everything which gives it a stroke and 
 */
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Constants.Swerve;
 
 //-Bruno: In the Robot program we are going to do a few things. Basically make sure that the RobotContainer is running.
 /*⬇extends is a keyword for creating a program of a different name but constructed based on the same class.
@@ -49,7 +50,9 @@ public class Robot extends TimedRobot {
   do actions. They don't return a value. You will understand this concept better in other files*/
   @Override
   public void robotPeriodic() {
+    
    //↑Bruno: robotPeriodic() is the function that runs actions while the robot is on
+   CommandScheduler.getInstance().run();
   }
 
   @Override

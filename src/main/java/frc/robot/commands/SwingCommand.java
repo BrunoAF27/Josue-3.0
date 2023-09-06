@@ -20,7 +20,7 @@ public class SwingCommand extends CommandBase {
     
     @Override
     public void initialize() {
-        swingSubsystem.setTargetAngle();
+        swingSubsystem.resetAngle();
     }
     @Override
     public void execute() {
