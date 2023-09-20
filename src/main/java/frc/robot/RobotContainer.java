@@ -26,24 +26,24 @@ import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-
+import frc.robot.autos.*;
 public class RobotContainer {
   /*⬇Bruno: First we need to declare the Subsystems. Subsystems are the parts of the robot divided in different
   sections. They are just the pieces, they hold the actions like move, return speed or anything you want.
   However the Commands are the ones that will define which actions the subsystems will do.
   */
   //private final BoomStickSubsystem boomStickSubsystem = new BoomStickSubsystem(7);
-  private final SwingSubsystem swingSubsystem = new SwingSubsystem(23,21,24,22);
+  //private final SwingSubsystem swingSubsystem = new SwingSubsystem(23,21,24,22);
   //private final BoomStickSubsystem boomStickSubsystem = new BoomStickSubsystem(6);
   //private final WristSubsystem wristSubsystem = new WristSubsystem(8);
-  private final RollerSubsystem rollerSubsystem = new RollerSubsystem(20);
+  //private final RollerSubsystem rollerSubsystem = new RollerSubsystem(20);
   //⬇Bruno: Now that we have every robot component, we are going to declare the controllers.
   public  Joystick controllerPlayer1 = new Joystick(0);
   public  Joystick controllerPlayer2 = new Joystick(1);
-  private final JoystickButton player2AButton = new JoystickButton(controllerPlayer2, XboxController.Button.kA.value);
+  /*private final JoystickButton player2AButton = new JoystickButton(controllerPlayer2, XboxController.Button.kA.value);
   private final JoystickButton player2BButton = new JoystickButton(controllerPlayer2, XboxController.Button.kB.value);
   private final JoystickButton player2YButton = new JoystickButton(controllerPlayer2, XboxController.Button.kY.value);
-
+  */
   //Swerve:
   /* Drive Controls */
   private final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -59,9 +59,10 @@ public class RobotContainer {
    
   public RobotContainer() {
     //swingSubsystem.setDefaultCommand(swingCommand);
-   /* swingSubsystem.setDefaultCommand(
+    /*swingSubsystem.setDefaultCommand(
       new SwingCommand(swingSubsystem)
-    );*/
+    );
+    */
     /*boomStickSubsystem.setDefaultCommand(
       new BoomStickCommand(boomStickSubsystem)
     );
@@ -69,13 +70,14 @@ public class RobotContainer {
       new WristCommand(wristSubsystem)
     );
     */
-    rollerSubsystem.setDefaultCommand(
+    /*rollerSubsystem.setDefaultCommand(
       new RollerCommand(
         rollerSubsystem,
         ()-> controllerPlayer2.getRawAxis(2), 
         ()-> controllerPlayer2.getRawAxis(3)
       )
     );
+  */
     s_Swerve.setDefaultCommand(
         new TeleopSwerve(
             s_Swerve, 
@@ -85,7 +87,7 @@ public class RobotContainer {
             () -> robotCentric.getAsBoolean()
         )
     );
-    //configureButtonBindings();
+    configureButtonBindings();
   }
 
   private void configureButtonBindings() {
@@ -100,17 +102,26 @@ public class RobotContainer {
     player2BButton.onTrue(new InstantCommand(() -> boomStickSubsystem.setNegativeTargetPosition(1)));
     player2YButton.onTrue(new InstantCommand(() -> boomStickSubsystem.setTargetPosition(2)));
     */
-    player2AButton.onTrue(
+    /*player2AButton.onTrue(
       new InstantCommand(()-> swingSubsystem.setPosition(0))
+    );*/
+    /*player2AButton.onTrue(
+      new InstantCommand(()-> swingSubsystem.setSpeed(0))
     );
+    player2BButton.onTrue(
+      new InstantCommand(()-> swingSubsystem.setSpeed(-0.9))
+    );
+    player2YButton.onTrue(
+      new InstantCommand(()-> swingSubsystem.setSpeed(0.9))
+    );*/
      /* new SequentialCommandGroup(
         new InstantCommand(()-> swingSubsystem.setPosition(0)),
         //new InstantCommand(()-> boomStickSubsystem.setTargetPosition(0)) 
       )
     );*/
-    player2BButton.onTrue(
+   /* player2BButton.onTrue(
     new InstantCommand(()-> swingSubsystem.setPosition(1))
-    );
+    );*/
     /*new SequentialCommandGroup(
         ,
         //new InstantCommand(()-> boomStickSubsystem.setTargetPosition(1)) 
@@ -118,14 +129,14 @@ public class RobotContainer {
     );
     */
 
-    player2YButton.onTrue(
-      new InstantCommand(()-> swingSubsystem.setPosition(2))
+    //player2YButton.onTrue(
+      //new InstantCommand(()-> swingSubsystem.setPosition(2))
       /*new SequentialCommandGroup(
         new InstantCommand(()-> swingSubsystem.setPosition(2)),
         new InstantCommand(()-> boomStickSubsystem.setTargetPosition(2)) 
       )
       */
-    );
+    //);
     zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
     //player2BButton.onTrue(new InstantCommand(() -> swingSubsystem.setPosition(1)));
     //player2YButton.onTrue(new InstantCommand(() -> swingSubsystem.setPosition(2)));
@@ -149,11 +160,7 @@ public class RobotContainer {
     }
     */
   }
-  
-  //⬇Bruno: Right now this isn't used and we will probably change it
-  public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
-  }
+
   public void start(){
     //⬇Bruno: Start will set initial values and reset everything
   }
@@ -166,6 +173,10 @@ public class RobotContainer {
       //⬇Bruno: In here we are updating the player2 controller input 
       checkPlayer2Buttons();
      CommandScheduler.getInstance().run();
+  }
+  public Command getAutonomousCommand() {
+    // An ExampleCommand will run in autonomous
+    return new exampleAuto(s_Swerve);
   }
   public void autonomousInitialize(){
     //CommandScheduler.getInstance().schedule(autonomousCommand3);

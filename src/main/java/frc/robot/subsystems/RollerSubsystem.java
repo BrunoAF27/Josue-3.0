@@ -13,6 +13,7 @@ public class RollerSubsystem extends SubsystemBase {
     private double rollerSpeed; 
     public RollerSubsystem(int motorId) {
         rollerMotor = new CANSparkMax(motorId, CANSparkMax.MotorType.kBrushless); // Replace with actual device ID
+        rollerMotor.restoreFactoryDefaults();
         //boomstickEncoder = boomstickMotor.getAlternateEncoder(Type.kQuadrature, 4096);
         rollerMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
         rollerEncoder = rollerMotor.getEncoder();

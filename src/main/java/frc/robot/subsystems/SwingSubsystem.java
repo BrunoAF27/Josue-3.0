@@ -19,12 +19,12 @@ public class SwingSubsystem extends SubsystemBase {
     private final Encoder externalEncoder = new Encoder(1,2);
     private final VictorSPX leftBMotor;
     private final VictorSPX rightBMotor;
-    private static final double maxAngle = 190;
     // Define your position setpoints
-    private static final double angle1 = 30;
-    private static final double angle2 = 50;
-    //private static final double formula = ();
-    private static final double[] positionSetpoints = {0.0, setAngle(maxAngle) , setAngle(maxAngle/3)};
+    private static final double angle1 = 51;
+    private static final double angle2 = 55;
+    private static final double maxAngle = 190;
+    private static final double[] positionSetpoints = {0.0,setAngle(angle1), setAngle(angle2)};
+    private double targetAngle = 0.0;
     private double targetPosition = 0;
     //Maximum output value
     private static final double maxOutput = 1.0; 
@@ -227,16 +227,19 @@ public class SwingSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Left Position", leftFMotor.getSelectedSensorPosition());
     }
     //Think this makes things go straight.
-    public void resetAngle(){
-       /* targetAngle = rightFMotor.getSelectedSensorPosition(1);
+    public void setTargetAngle(){
+        targetAngle = rightFMotor.getSelectedSensorPosition(1);
         SmartDashboard.putNumber("Target Angle", targetAngle);
-        */
     }
     public boolean isAtPosition() {
         double currentPosition = leftFMotor.getSelectedSensorPosition();
         double setpoint = leftFMotor.getClosedLoopTarget();
         return Math.abs(currentPosition - setpoint) < leftFMotor.getSelectedSensorPosition(0) + 1;
     }
+    public void resetAngle(){
+         targetAngle = leftFMotor.getSelectedSensorPosition(1);
+         SmartDashboard.putNumber("Target Angle", targetAngle);
+     }
     public static double setAngle(double degrees){
         degrees = 180-degrees;
 

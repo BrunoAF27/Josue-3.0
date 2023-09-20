@@ -45,13 +45,13 @@ public final class Constants {
         public static final boolean canCoderInvert = chosenModule.canCoderInvert;
 
         /* Swerve Current Limiting */
-        public static final int angleContinuousCurrentLimit = 25;
-        public static final int anglePeakCurrentLimit = 40;
+        public static final int angleContinuousCurrentLimit = 25/*25*/;
+        public static final int anglePeakCurrentLimit = 30/*30*/;
         public static final double anglePeakCurrentDuration = 0.1;
         public static final boolean angleEnableCurrentLimit = true;
 
-        public static final int driveContinuousCurrentLimit = 35;
-        public static final int drivePeakCurrentLimit = 60;
+        public static final int driveContinuousCurrentLimit = 35/*35*/;
+        public static final int drivePeakCurrentLimit = 60/*60*/;
         public static final double drivePeakCurrentDuration = 0.1;
         public static final boolean driveEnableCurrentLimit = true;
 
@@ -85,7 +85,7 @@ public final class Constants {
         public static final double maxAngularVelocity = 10.0; //TODO: This must be tuned to specific robot
 
         /* Neutral Modes */
-        public static final NeutralMode angleNeutralMode = NeutralMode.Brake;
+        public static final NeutralMode angleNeutralMode = NeutralMode.Coast;
         public static final NeutralMode driveNeutralMode = NeutralMode.Brake;
 
         /* Module Specific Constants */

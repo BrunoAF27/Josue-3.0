@@ -75,23 +75,17 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    /*↑Bruno: autonomousInit() is the function that runs actions when the robot starts the autonomous mode. 
-    Right now it is empty since it doesn't exist. 
-    ⬇For the autonomous consider making a sendable chooser which is a menu for autonomous but don't 
-    need to worry about it right now. Check it after reviewing the other test.
-    */
-    /*autonomousCommand = robotContainer.getAutonomousCommand();
+    autonomousCommand = robotContainer.getAutonomousCommand();
+
+    // schedule the autonomous command (example)
     if (autonomousCommand != null) {
       autonomousCommand.schedule();
-    }*/
-    robotContainer.start();
-    robotContainer.autonomousInitialize();
+    }
   }
 
+  /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {
-    //↑Bruno: autonomousPeriodic() is the function that runs actions while the robot is in the autonomous mode. 
-  }
+  public void autonomousPeriodic() {}
 
   @Override
   public void autonomousExit() {
