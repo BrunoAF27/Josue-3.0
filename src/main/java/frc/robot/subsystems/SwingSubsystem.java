@@ -37,8 +37,7 @@ public class SwingSubsystem extends SubsystemBase {
     leftFMotor.configFactoryDefault();
     leftBMotor.configFactoryDefault();
     rightFMotor.configFactoryDefault();
-    rightBMotor.configFactoryDefault();  
-
+    rightBMotor.configFactoryDefault(); 
     leftFMotor.configPeakCurrentLimit(30);
     rightFMotor.configPeakCurrentLimit(30);
 

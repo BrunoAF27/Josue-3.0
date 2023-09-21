@@ -22,7 +22,7 @@ public class RobotContainer {
   */
   //If you want to use a subsystem uncomment it and the things done in the code.
   //private final BoomStickSubsystem boomStickSubsystem = new BoomStickSubsystem(7);
-  //private final SwingSubsystem swingSubsystem = new SwingSubsystem(23,21,24,22);
+  private final SparkSwingSubsystem swingSubsystem = new SparkSwingSubsystem(23,21,24,22);
   //private final BoomStickSubsystem boomStickSubsystem = new BoomStickSubsystem(6);
   //private final WristSubsystem wristSubsystem = new WristSubsystem(8);
   //private final RollerSubsystem rollerSubsystem = new RollerSubsystem(20);
