@@ -11,6 +11,8 @@ import frc.lib.util.COTSFalconSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
 
 public final class Constants {
+    /*I would recommend not touching anything, however electrically you should modify some values.
+     Go to current limiting. Additionaly the modules may have different ids so change them too*/
     public static final double stickDeadband = 0.1;
 
     public static final class Swerve {
@@ -45,6 +47,7 @@ public final class Constants {
         public static final boolean canCoderInvert = chosenModule.canCoderInvert;
 
         /* Swerve Current Limiting */
+        //The commented values are the fastest, but if you want to save energy, lower the values.
         public static final int angleContinuousCurrentLimit = 25/*25*/;
         public static final int anglePeakCurrentLimit = 30/*30*/;
         public static final double anglePeakCurrentDuration = 0.1;

@@ -4,6 +4,7 @@
 package frc.robot;
 
 public class CustomPID {
+	//This class allows you to create pids more efficiently.
 	public final double kP;
 	public final double kI;
 	public final double kD;

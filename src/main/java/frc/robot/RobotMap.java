@@ -76,10 +76,7 @@ public class RobotMap{
      //1 neo brushless
     //⬇Wrist Encoder IDS:
 
-    //⬇Wrist Values:
-    private final double minWristDistance = 0.0;
-    private final double maxWristDistance = 1000;
-    private final double[] wristLevelPosition = {10, 100, 900};
+ 
 
     //⬇Roller Motor IDS:
       //1 neo brushless

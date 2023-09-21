@@ -14,20 +14,20 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.*;
 public class SwingSubsystem extends SubsystemBase {
+    //First we declare the master motors which are the front motors
     private final TalonSRX leftFMotor;
     private final TalonSRX rightFMotor;
-    private final Encoder externalEncoder = new Encoder(1,2);
+    //The Back motors are the follower motors.
     private final VictorSPX leftBMotor;
     private final VictorSPX rightBMotor;
-    // Define your position setpoints
+    //Define your position setpoints
     private static final double angle1 = 51;
     private static final double angle2 = 55;
     private static final double maxAngle = 190;
     private static final double[] positionSetpoints = {0.0,setAngle(angle1), setAngle(angle2)};
+    //TargetAngle and target position represent the current objective of the subsytem.
     private double targetAngle = 0.0;
     private double targetPosition = 0;
-    //Maximum output value
-    private static final double maxOutput = 1.0; 
     public SwingSubsystem(int talonLeftFId, int talonLeftBId, int talonRightFId, int talonRightBId) {
         leftFMotor = new TalonSRX(talonLeftFId);
         leftBMotor = new VictorSPX(talonLeftBId);

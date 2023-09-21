@@ -13,6 +13,7 @@ public final class CTREConfigs {
     public CANCoderConfiguration swerveCanCoderConfig;
 
     public CTREConfigs(){
+        //Don't modify anything. At least for Josue don't modify anything
         swerveAngleFXConfig = new TalonFXConfiguration();
         swerveDriveFXConfig = new TalonFXConfiguration();
         swerveCanCoderConfig = new CANCoderConfiguration();
